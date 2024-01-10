@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456abc@
+      MYSQL_DATABASE: spotify-app
+    ports:
+      - "3307:3306"
+    expose:
+      - 3306
+  be:
+    build:
+      context: ./be
+      dockerfile: Dockerfile
+    volumes:
+      - ./be:/app
+    # tty: true
+    container_name: backend
+    environment:
+      DB_PORT: 3306
+      DB_HOST: mysql
+    ports:
+      - 8001:8080
